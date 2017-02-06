@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Index</title>
+</head>
+<body>
+<form method="POST" enctype="multipart/form-data" id="fileUploadForm">
+    <input type="text" name="extraField"/><br/><br/>
+    <input type="file" name="files" multiple="multiple"/><br/><br/>
+    <input type="submit" value="Submit" id="btnSubmit"/>
+</form>
+
+<h1>Ajax Post Result</h1>
+<pre>
+    <span id="result"></span>
+</pre>
+
+<script type="text/javascript"
+        src="webjars/jquery/3.1.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
