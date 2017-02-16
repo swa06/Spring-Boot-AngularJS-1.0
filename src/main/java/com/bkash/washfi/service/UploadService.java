@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Created by syed.ahmad on 2/8/2017.
  */
@@ -27,6 +31,19 @@ public class UploadService {
         }else{
             logger.error("Student data cannot be null.");
         }
+    }
+
+    public List<FileInformation> findAll() {
+        List<FileInformation> fileInformationList=new ArrayList<>();
+        Iterator<FileInformation> iterator=uploadRepository.findAll().iterator();
+        while(iterator.hasNext()){
+            fileInformationList.add(iterator.next());
+        }
+        return fileInformationList;
+    }
+
+    public void removeUser(int id) {
+        uploadRepository.delete(id);
     }
 
 

@@ -2,23 +2,106 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
+
+    <script type="text/javascript"
+            src="webjars/jquery/3.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="webjars/jquery-ui/1.12.1/jquery-ui.min.css"/>
+
+    <script type="text/javascript" src="webjars/angularjs/1.4.9/angular.js"></script>
+    <!--<script type="text/javascript" src="webjars/angularjs/1.4.9/angular.js"></script>-->
+
+    <script type="text/javascript" src="js/plain.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+
     <title>Index</title>
+
+    <style>
+        #dialog {
+            display:none;
+
+        }
+        .glyphicon {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+
+    </style>
+
 </head>
-<body>
-<form method="POST" enctype="multipart/form-data" id="fileUploadForm">
-    <label>Username :</label>  <input type="text" name="extraField"/><br/><br/>
-    <label>Upload file(s) :</label>  <input type="file" name="files" multiple="multiple"/><br/><br/>
-    <input type="submit" value="Submit" id="btnSubmit"/>
-</form>
 
-<h1>Ajax Post Result</h1>
-<pre>
-    <span id="result"></span>
-</pre>
 
-<script type="text/javascript"
-        src="webjars/jquery/3.1.1/jquery.min.js"></script>
+<body ng-app="PocAPP" ng-controller="Controller">
 
-<script type="text/javascript" src="js/main.js"></script>
+<div id="insertUser" class="well" style="padding-top:2%">
+    <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
+        <label>Username :</label>  <input type="text" placeholder="Full Name" name="extraField"/><br/><br/>
+        <label>Upload file(s) :</label>  <input type="file" name="files" id="file" multiple="multiple"/><br/>
+        <div id="fileListPrint"></div>
+        <input ng-click="fire_ajax_submit()" type="submit" value="Submit" id="btnSubmit"/>
+    </form>
+</div>
+
+<div id="dialog" title="Nola-The New Dialog" class="well">
+    <form method="POST" enctype="multipart/form-data" id="fileEditForm" class="well">
+        <label>Username :</label>  <input type="text" value="{{editUser}}" name="extraField" /><br/><br/>
+        <label>Files :</label>
+        <table class="table table-condensed">
+            <td>
+                <ul ng-repeat="file in fileList.substring(1, ((fileList).length-1)).split(',')" style="list-style-type:none">
+                    <li>
+                        <div class="row">
+                            <div class="col-sm-10"><b><span class="glyphicon glyphicon-file"></span></b>{{file}}</div>
+                            <div class="col-sm-2"><b><span class="glyphicon glyphicon-trash"></span></b></div>
+                        </div>
+                    </li>
+                </ul>
+            </td>
+        </table>
+        <label>Upload file(s) :</label>  <input type="file" name="files" id="file2" multiple="multiple"/><br/>
+        <div id="fileListPrintEdit"></div>
+        <input ng-click="fire_ajax_submit()" type="submit" value="Submit" id="btnEditSubmit"/>
+    </form>
+</div>
+
+
+
+<div id="resultTable" ng-init="init_result()" class="container" style="float: left">
+    <h1>Result</h1>
+    <table class="table table-bordered" >
+        <tr>
+            <th class = "jumbotron" ng-click="orderById()">Id <span class="glyphicon glyphicon-sort" style="font-size:80%"></span></th>
+            <th class = "jumbotron" ng-click="orderByName()">Name <span class="glyphicon glyphicon-sort" style="font-size:80%"></span></th>
+            <th class = "jumbotron">URL</th>
+            <th class = "jumbotron">
+                <span class="glyphicon glyphicon-pencil"></span> Edit
+            </th>
+            <th class = "jumbotron">
+                <span class="glyphicon glyphicon-trash"></span> Trash
+            </th>
+
+        </tr>
+
+        <tr ng-repeat="resultList in resultFromData" >
+            <td style="text-align: center">{{resultList.id}}</td>
+            <td>{{resultList.name}}</td>
+            <td>
+                <ul ng-repeat="value in resultList.url.substring(1, ((resultList.url).length-1)).split(',')">
+                    <li><a href="/download?fileName={{value}}">{{value}}</a></li>
+                </ul>
+            </td>
+            <td ng-click="editDetails(resultList.name,resultList.url)" style="text-align: center"><span class="glyphicon glyphicon-edit fa-lg" ></span></td>
+            <td ng-click="deleteDetails(resultList.id)" style="text-align: center"><span class="glyphicon glyphicon-trash"></span></td>
+        </tr>
+
+    </table>
+</div>
+
+
 </body>
+
 </html>
